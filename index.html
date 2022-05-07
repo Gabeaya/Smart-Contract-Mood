@@ -17,15 +17,70 @@
     type="text/javascript"
   ></script>
   <script>
+    //this will check if the browser has access to etherwallet(metamask)
     window.ethereum.enable();
+    //provider interacts with the blockchain
     var provider = new ethers.providers.Web3Provider(
+      //this is your wallet
       web3.currentProvider,
+      //this is the currency to be used
       "ropsten"
-
     );
-    var MoodContractAddress = "";
-    var MoodContractABI = [];
+    //these are found in the contract
+    var MoodContractAddress = "0x22e595429d0ed1E650AE65633466A478A9BA56c8";
+    //this is the interface that provides users with the name of the functions
+    var MoodContractABI = [
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "_mood",
+            "type": "string"
+          }
+        ],
+        "name": "setMood",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getMood",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ];
     var MoodContract;
     var signer;
+    //This goes to our provide, asks for the list of accounts 
+    provider.listAccount().then(function(accounts) {
+      //here we assign the signer to the first account listed from the provider and assigns our signer(address)
+      signer = provider.getSigner(accounts[0]);
+      // this creates an instance of the contract by collecting address the abi and the signer we created above
+      MoodContract = new ethers.Contract(
+        MoodContractAddress,
+        MoodContractABI,
+        signer
+      );
+    });
+    //here we define the function we use above to use the get mood funciton from the provider
+    async function getMood() {
+      getMoodPromise = MoodContract.getMood();
+      //bvelow we set the mood equal to the request above
+      var Mood = await getMoodPromise;
+      console.log(Mood);
+    }
+    async function setMood() {
+      let mood = document.getElementById("mood").value;
+      setMoodPromise = MoodContract.setMood(mood);
+      await setMoodPromise;
+    }
   </script>
 </html>
