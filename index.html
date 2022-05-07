@@ -17,6 +17,15 @@
     type="text/javascript"
   ></script>
   <script>
-    
+    window.ethereum.enable();
+    var provider = new ethers.providers.Web3Provider(
+      web3.currentProvider,
+      "ropsten"
+
+    );
+    var MoodContractAddress = "";
+    var MoodContractABI = [];
+    var MoodContract;
+    var signer;
   </script>
 </html>
