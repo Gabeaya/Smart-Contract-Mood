@@ -60,7 +60,7 @@
     var MoodContract;
     var signer;
     //This goes to our provide, asks for the list of accounts 
-    provider.listAccount().then(function(accounts) {
+    provider.listAccounts().then(function(accounts) {
       //here we assign the signer to the first account listed from the provider and assigns our signer(address)
       signer = provider.getSigner(accounts[0]);
       // this creates an instance of the contract by collecting address the abi and the signer we created above
